@@ -43,18 +43,18 @@ d3.json(geoData).then(function (data) {
     function choosemagColor(magnitude) {
         switch (magnitude) {
             case magnitude > 5:
-                return "red";
+                return "rgb(139, 0, 0)";
             case magnitude > 4:
-                return "darkorange";
+                return "rgb(255, 140, 0)";
             case magnitude > 3:
-                return "gold";
+                return "rgb(255, 215, 0)";
             case magnitude > 2:
-                return "green";
+                return "rgb(0, 255, 0)";
             case magnitude > 1:
-                return "lightgreen";
+                return "rgb(189, 245, 189)";
             default:
-                return "lightyellow";
-        };
+                return "rgb(255, 221, 26)";
+        }
     };
     // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
     function choosemagSize(magnitude) {
@@ -71,7 +71,7 @@ d3.json(geoData).then(function (data) {
                 return 6;
             default:
                 return 3;
-        };
+        }
     };
 
     // Creating a function to determine the the style of the marker as the "magnitude" is higher or lower
