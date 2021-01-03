@@ -67,7 +67,7 @@ d3.json(geoData).then(function (data) {
                 return 18;
             case magnitude > 2:
                 return 12;
-            case magintude > 1:
+            case magnitude > 1:
                 return 6;
             default:
                 return 3;
