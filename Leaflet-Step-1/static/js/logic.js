@@ -41,7 +41,7 @@ d3.json(geoData).then(function (data) {
 
     // Creating a function that will determine color of the marker as the "magnitude" is high or lower
     function choosemagColor(magnitude) {
-        switch (true) {
+        switch (magnitude) {
             case magnitude > 5:
                 return "red";
             case magnitude > 4:
@@ -50,7 +50,7 @@ d3.json(geoData).then(function (data) {
                 return "gold";
             case magnitude > 2:
                 return "green";
-            case magintude > 1:
+            case magnitude > 1:
                 return "lightgreen";
             default:
                 return "lightyellow";
