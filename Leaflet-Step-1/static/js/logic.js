@@ -42,15 +42,15 @@ d3.json(geoData).then(function (data) {
     // Creating a function that will determine color of the marker as the "magnitude" is high or lower
     function choosemagColor(magnitude) {
         switch (magnitude) {
-            case magnitude >= 5:
+            case magnitude > 5:
                 return "red";
-            case magnitude >= 4:
+            case magnitude > 4:
                 return "darkorange";
-            case magnitude >= 3:
+            case magnitude > 3:
                 return "gold";
-            case magnitude >= 2:
+            case magnitude > 2:
                 return "green";
-            case magintude >= 1:
+            case magintude > 1:
                 return "lightgreen";
             default:
                 return "lightyellow";
@@ -59,15 +59,15 @@ d3.json(geoData).then(function (data) {
     // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
     function choosemagSize(magintude) {
         switch (magnitude) {
-            case magnitude >= 5:
+            case magnitude > 5:
                 return 30;
-            case magnitude >= 4:
+            case magnitude > 4:
                 return 24;
-            case magnitude >= 3:
+            case magnitude > 3:
                 return 18;
-            case magnitude >= 2:
+            case magnitude > 2:
                 return 12;
-            case magintude >= 1:
+            case magintude > 1:
                 return 6;
             default:
                 return 3;
@@ -113,9 +113,23 @@ d3.json(geoData).then(function (data) {
     // Setting up the legend for the map
     var legend = L.control({ position: "bottomleft" });
     legend.onAdd = function () {
-        var div = L.DomUtil.create("div", "info legend"),
 
-    }
+        var div = L.DomUtil.create("div", "info legend"),
+            magLevels = [0, 1, 2, 3, 4, 5],
+            labels = [];
+
+        // Looping through the magnitude to generate a label 
+        for (var i = 0; i < magLevels; i++) {
+            div.innerHTML +=
+                '<i style="background: ' + choosemagColor(magLevels[i] + 1) + '"></i> ' +
+                magLevels[i] + (magLevels[i + 1] ? '&ndash;' + magLevels[i, 1] + '<br>' : '+');
+        }
+        return div;
+
+    };
+
+    // Adding legend to the map
+    legend.addTo(myMap);
 
 
 
