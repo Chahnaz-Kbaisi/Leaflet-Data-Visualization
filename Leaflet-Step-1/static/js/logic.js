@@ -14,7 +14,7 @@
 
 // Creat map Object
 var myMap = L.map("map", {
-    center: [34.0522, -118.2437],
+    center: [42.1888, -120.345],
     zoom: 8
 });
 
@@ -41,7 +41,7 @@ d3.json(geoData).then(function (data) {
 
     // Creating a function that will determine color of the marker as the "magnitude" is high or lower
     function choosemagColor(magnitude) {
-        switch (magnitude) {
+        switch (true) {
             case magnitude > 5:
                 return "rgb(139, 0, 0)";
             case magnitude > 4:
@@ -58,7 +58,7 @@ d3.json(geoData).then(function (data) {
     };
     // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
     function choosemagSize(magnitude) {
-        switch (magnitude) {
+        switch (true) {
             case magnitude > 5:
                 return 30;
             case magnitude > 4:
