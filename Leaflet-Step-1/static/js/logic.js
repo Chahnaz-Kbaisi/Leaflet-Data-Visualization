@@ -57,7 +57,7 @@ d3.json(geoData).then(function (data) {
         };
     };
     // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
-    function choosemagSize(magintude) {
+    function choosemagSize(magnitude) {
         switch (magnitude) {
             case magnitude > 5:
                 return 30;
