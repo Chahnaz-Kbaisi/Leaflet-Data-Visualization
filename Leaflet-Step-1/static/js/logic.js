@@ -110,6 +110,13 @@ d3.json(geoData).then(function (data) {
 
     }).addTo(myMap);
 
+    // Setting up the legend for the map
+    var legend = L.control({ position: "bottomleft" });
+    legend.onAdd = function () {
+        var div = L.DomUtil.create("div", "info legend"),
+
+    }
+
 
 
 });
