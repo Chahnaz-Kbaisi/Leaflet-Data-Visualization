@@ -104,10 +104,6 @@ d3.json(geoData).then(function (data) {
                 feature.properties.mag + "</p>"
             );
         }
-
-
-
-
     }).addTo(myMap);
 
     // Setting up the legend for the map
@@ -130,7 +126,4 @@ d3.json(geoData).then(function (data) {
 
     // Adding legend to the map
     legend.addTo(myMap);
-
-
-
 });
