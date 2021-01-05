@@ -14,16 +14,16 @@
 
 // Creat map Object
 var myMap = L.map("map", {
-    center: [42.1888, -120.345],
-    zoom: 8
+    center: [42.1888, -120.3458],
+    zoom: 4
 });
 
 // Adding tile layer
 L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     maxZoom: 18,
-    // id: "mapbox/streets-v11s",
-    id: "mapbox/streets-v11",
+    // id: "mapbox/streets-v11",
+    id: "mapbox/light-v10",
     accessToken: API_KEY
 }).addTo(myMap);
 
@@ -43,17 +43,17 @@ d3.json(geoData).then(function (data) {
     function choosemagColor(magnitude) {
         switch (true) {
             case magnitude > 5:
-                return "rgb(139, 0, 0)";
+                return "rgb(240, 107, 107)";
             case magnitude > 4:
-                return "rgb(255, 140, 0)";
+                return "rgb(240, 167, 107)";
             case magnitude > 3:
-                return "rgb(255, 215, 0)";
+                return "rgb(243, 186, 77)";
             case magnitude > 2:
-                return "rgb(0, 255, 0)";
+                return "rgb(243, 219, 77)";
             case magnitude > 1:
-                return "rgb(189, 245, 189)";
+                return "rgb(225, 243, 77)";
             default:
-                return "rgb(255, 221, 26)";
+                return "rgb(183, 243, 77)";
         }
     };
     // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
@@ -89,7 +89,7 @@ d3.json(geoData).then(function (data) {
     };
 
     // Creating a layer of GeoJSON data to contain the array of the created features
-    var geoJsonLayer = L.geoJSON(data, {
+    L.geoJSON(data, {
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng);
         },
@@ -107,7 +107,7 @@ d3.json(geoData).then(function (data) {
     }).addTo(myMap);
 
     // Setting up the legend for the map
-    var legend = L.control({ position: "bottomleft" });
+    var legend = L.control({ position: "bottomright" });
     legend.onAdd = function () {
 
         var div = L.DomUtil.create("div", "info legend"),
