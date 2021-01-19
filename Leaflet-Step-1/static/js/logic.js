@@ -43,17 +43,17 @@ d3.json(geoData).then(function (data) {
     function choosemagColor(magnitude) {
         switch (true) {
             case magnitude > 5:
-                return "rgb(240, 107, 107)";
+                return "rgb(234, 44, 44)";
             case magnitude > 4:
-                return "rgb(240, 167, 107)";
+                return "rgb(234, 130, 44)";
             case magnitude > 3:
-                return "rgb(243, 186, 77)";
+                return "rgb(238, 156, 0)";
             case magnitude > 2:
-                return "rgb(243, 219, 77)";
+                return "rgb(238, 204, 0)";
             case magnitude > 1:
-                return "rgb(225, 243, 77)";
+                return "rgb(212, 238, 0)";
             default:
-                return "rgb(183, 243, 77)";
+                return "rgb(152, 238, 0)";
         }
     };
     // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
@@ -110,16 +110,16 @@ d3.json(geoData).then(function (data) {
     var legend = L.control({ position: "bottomright" });
     legend.onAdd = function () {
 
-        var div = L.DomUtil.create("div", "info legend"),
-            magLevels = [0, 1, 2, 3, 4, 5],
-            labels = [];
+        var div = L.DomUtil.create("div", "info legend");
+        var magLevels = [0, 1, 2, 3, 4, 5];
 
         // Looping through the magnitude to generate a label 
-        for (var i = 0; i < magLevels; i++) {
+        for (var i = 0; i < magLevels.length; i++) {
             div.innerHTML +=
                 '<i style="background: ' + choosemagColor(magLevels[i] + 1) + '"></i> ' +
-                magLevels[i] + (magLevels[i + 1] ? '&ndash;' + magLevels[i, 1] + '<br>' : '+');
+                magLevels[i] + (magLevels[i + 1] ? '&ndash;' + magLevels[i + 1] + '<br>' : '+');
         }
+        console.log(div);
         return div;
 
     };
