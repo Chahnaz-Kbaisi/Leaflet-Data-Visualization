@@ -1,6 +1,7 @@
 // Level 2: More Data (Optional)
 
-// The USGS wants you to plot a second data set on your map to illustrate the relationship between tectonic plates and seismic activity. 
+// The USGS wants you to plot a second data set on your map to illustrate the relationship 
+// between tectonic plates and seismic activity. 
 // You will need to pull in a second data set and visualize it along side your original set of data. 
 // Data on tectonic plates can be found at <https://github.com/fraxen/tectonicplates>.
 // In this step we are going to..
@@ -63,24 +64,136 @@ streetmap.addTo(myMap)
 // Adding outdoors tile layer to myMap
 outdoors.addTo(myMap)
 
-
+// Defining the map object that will hold all three tile layers
 var baseMaps = {
     Satellite: satellite,
     StreetMap: streetmap,
-    Outdoor: outdoors
+    Outdoors: outdoors
 };
 
+// Add a number of base maps to choose from as well as separate out our 
+// two different data sets into overlays that can be turned on and off independently.
+
+// Defining the overlays object to hold both data sets
 var overlays = {
     "Tectonic Plates": tectonicPlates,
     Earthquakes: earthquakes
 };
 
+// Adding the control option to the map to allowed user to change between tile layers
 L.control.layers(baseMaps, overlays).addTo(myMap);
 
-d3.json(geoData, function (data) {
+
+// Data set 1: Storing the geojson data url for all earthquakes from the past 7 days
+var geoData = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson";
+
+// Grabbing the geoData with d3
+d3.json(geoData).then(function (data) {
+    // console.log(geoData);
+
+    // Creating a function to determine the color of the marker based on the magnitude of the earthquake
+    function choosemagColor(depth) {
+        switch (true) {
+            case depth > 90:
+                return "rgb(234, 44, 44)";
+            case depth > 70:
+                return "rgb(234, 130, 44)";
+            case depth > 50:
+                return "rgb(238, 156, 0)";
+            case depth > 30:
+                return "rgb(238, 204, 0)";
+            case depth > 10:
+                return "rgb(212, 238, 0)";
+            default:
+                return "rgb(152, 238, 0)";
+        }
+    }
+
+    // Creating a funtion to determine the radius of the marker
+    function choosemagRadius(magnitude) {
+        if (magnitude === 0) {
+            return 1;
+        }
+        return magnitude * 4;
+    }
+
+    // Creating a function to determine the style of the marker using the color & radius functions
+    function stylemag(feature) {
+        return {
+            opacity: 1,
+            fillColor: choosemagColor(feature.geometry.coordinates[2]),
+            color: "Black",
+            radius: choosemagRadius(feature.properties.mag),
+            stroke: true,
+            weight: 0.5
+
+        };
+    }
+
+    // Creating a layer of GeoJSON data to contain the array of the created features
+    L.geoJSON(data, {
+        pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng);
+        },
+
+        // Adding marker style
+        style: stylemag,
+
+        // Binding on Popup to display informatiom
+        onEachFeature: function (feature, layer) {
+            layer.bindPopup(
+                "Magnitude: "
+                + feature.properties.mag
+                + "<br>Depth: "
+                + feature.geometry.coordinates[2]
+                + "<br>Location: "
+                + feature.properties.place
+            );
+        }
+    }).addTo(earthquakes);
+
+    // Adding the earthquake to myMap
+    earthquakes.addTo(myMap);
+
+    // Setting up the legend for the map
+    var legend = L.control({
+        position: "bottomright"
+
+    });
+    legend.onAdd = function () {
+        var div = L.DomUtil.create("div", "info legend");
+        var magLevels = [-10, 10, 30, 50, 70, 90];
+        var colors = [
+            "rgb(152, 238, 0)",
+            "rgb(212, 238, 0)",
+            "rgb(238, 204, 0)",
+            "rgb(238, 156, 0)",
+            "rgb(234, 130, 44)",
+            "rgb(234, 44, 44)"
+        ];
+        // Looping through the functions to generate a label
+        for (var i = 0; i < magLevels.length; i++) {
+            div.innerHTML +=
+                "<i style='background: "
+                + colors[i]
+                + "'></i> "
+                + maglevels[i]
+                + (magLevels[i + 1] ? "&ndash;" + maglevels[i + 1] + "<br>" : "+");
+        }
+        console.log(div);
+        return div;
+    };
+    // adding legend to the map
+    legend.addTo(myMap);
+
 
 });
 
-d3.json(tectonicplateData, function (data) {
+// Data set 2: Storing the Tectonic plate data 
+var tectonicplateData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
 
-});
+
+// Grabbing the tectonicplateData with d3
+// d3.json(tectonicplateData, function (data) {
+
+// });
