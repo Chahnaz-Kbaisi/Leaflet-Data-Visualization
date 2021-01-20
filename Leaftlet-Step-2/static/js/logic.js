@@ -28,7 +28,7 @@ var satellite = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}
     accessToken: API_KEY
 });
 
-var streetmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+var grayscale = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     tileSize: 512,
     maxZoom: 18,
@@ -52,14 +52,14 @@ var myMap = L.map("map", {
         40.7, -94.5
     ],
     zoom: 4,
-    layers: [satellite, streetmap, outdoors]
+    layers: [satellite, grayscale, outdoors]
 });
 
 // Adding satellite tile layer to myMap
 satellite.addTo(myMap)
 
 // Adding streetmap tile layer to myMap
-streetmap.addTo(myMap)
+grayscale.addTo(myMap)
 
 // Adding outdoors tile layer to myMap
 outdoors.addTo(myMap)
@@ -67,7 +67,7 @@ outdoors.addTo(myMap)
 // Defining the map object that will hold all three tile layers
 var baseMaps = {
     Satellite: satellite,
-    StreetMap: streetmap,
+    Grayscale: grayscale,
     Outdoors: outdoors
 };
 
@@ -94,15 +94,15 @@ d3.json(geoData).then(function (data) {
     // Creating a function to determine the color of the marker based on the magnitude of the earthquake
     function choosemagColor(depth) {
         switch (true) {
-            case depth > 90:
+            case depth > 5:
                 return "rgb(234, 44, 44)";
-            case depth > 70:
+            case depth > 4:
                 return "rgb(234, 130, 44)";
-            case depth > 50:
+            case depth > 3:
                 return "rgb(238, 156, 0)";
-            case depth > 30:
+            case depth > 2:
                 return "rgb(238, 204, 0)";
-            case depth > 10:
+            case depth > 1:
                 return "rgb(212, 238, 0)";
             default:
                 return "rgb(152, 238, 0)";
@@ -162,7 +162,7 @@ d3.json(geoData).then(function (data) {
     });
     legend.onAdd = function () {
         var div = L.DomUtil.create("div", "info legend");
-        var magLevels = [-10, 10, 30, 50, 70, 90];
+        var magLevels = [0, 1, 2, 3, 4, 5];
         var colors = [
             "rgb(152, 238, 0)",
             "rgb(212, 238, 0)",
@@ -173,27 +173,32 @@ d3.json(geoData).then(function (data) {
         ];
         // Looping through the functions to generate a label
         for (var i = 0; i < magLevels.length; i++) {
-            div.innerHTML +=
-                "<i style='background: "
+            div.innerHTML += "<i style='background: "
                 + colors[i]
                 + "'></i> "
-                + maglevels[i]
-                + (magLevels[i + 1] ? "&ndash;" + maglevels[i + 1] + "<br>" : "+");
+                + magLevels[i]
+                + (magLevels[i + 1] ? "&ndash;" + magLevels[i + 1] + "<br>" : "+");
         }
-        console.log(div);
         return div;
     };
     // adding legend to the map
     legend.addTo(myMap);
 
+    // Data set 2: Storing the Tectonic plate data 
+    var tectonicplateData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
+
+
+    // Grabbing the tectonicplateData with d3
+    d3.json(tectonicplateData, function (dataplate) {
+
+        L.geoJSON(dataplate, {
+            color: "orange",
+            weight: 2
+        }).addTo(tectonicPlates);
+
+        // Adding tectonicplates to the map
+        tectonicPlates.addTo(myMap);
+
+    });
 
 });
-
-// Data set 2: Storing the Tectonic plate data 
-var tectonicplateData = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json";
-
-
-// Grabbing the tectonicplateData with d3
-// d3.json(tectonicplateData, function (data) {
-
-// });
