@@ -56,7 +56,7 @@ d3.json(geoData).then(function (data) {
                 return "rgb(152, 238, 0)";
         }
     };
-    // Creating a function to determin the size of the marker as the "magnitude" is higher or lower
+    // Creating a function to determine the size of the marker as the "magnitude" is higher or lower
     function choosemagSize(magnitude) {
         switch (true) {
             case magnitude > 5:
@@ -93,7 +93,7 @@ d3.json(geoData).then(function (data) {
         pointToLayer: function (feature, latlng) {
             return L.circleMarker(latlng);
         },
-        // Adding market style created
+        // Adding marker style created
         style: stylemag,
 
         // Binding a Popup for the location, date, time, and the magnitude of the earthquake
@@ -107,7 +107,9 @@ d3.json(geoData).then(function (data) {
     }).addTo(myMap);
 
     // Setting up the legend for the map
-    var legend = L.control({ position: "bottomright" });
+    var legend = L.control({
+        position: "bottomright"
+    });
     legend.onAdd = function () {
 
         var div = L.DomUtil.create("div", "info legend");
